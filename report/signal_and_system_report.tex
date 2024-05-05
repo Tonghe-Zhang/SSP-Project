@@ -1,0 +1,502 @@
+
+%Choose a conveniently small page size
+\documentclass{article}
+%\usepackage[paperheight=16cm,paperwidth=12cm,textwidth=10cm]{geometry}
+\usepackage{lipsum}% for some dummy text
+
+%package for headings
+\setlength{\headheight}{20.60818pt}
+\usepackage{ctex}
+\usepackage{authblk} 
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{moreenum}
+\usepackage{mathtools}
+\usepackage{url}
+\usepackage{bm}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{subcaption}
+\usepackage{booktabs} % toprule
+\usepackage[mathcal]{eucal}
+%top of a page
+% \usepackage{fancyhdr}
+% \pagestyle{fancy}
+% \fancyhead[L]{\runtitle}
+% \fancyhead[R]{\runauthor}
+
+%necessary headers for maths/physics
+\usepackage{physics}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{pxfonts}
+\usepackage{amsfonts, amssymb}
+
+%package for insertion of figures and tables
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[export]{adjustbox} 
+\usepackage{caption}
+\usepackage{subcaption}
+\captionsetup[figure]{name={fig }}
+\captionsetup[table]{name={table }}
+
+%package for references,annotations and captions 
+    \usepackage[justification=centering]{caption} %Manually make all the captions stay in middle of the line.
+
+    \usepackage{pdfcomment}
+
+    \newcommand{\commentontext}[2]{\colorbox{yellow!60}{#1}\pdfcomment[color={0.234 0.867 0.211},hoffset=-6pt,voffset=10pt,opacity=0.5]{#2}}
+    \newcommand{\commentatside}[1]{\pdfcomment[color={0.045 0.278 0.643},icon=Note]{#1}}
+    \newcommand{\todo}[1]{\commentatside{#1}}
+    \newcommand{\TODO}[1]{\commentatside{#1}}
+    
+    %\usepackage{hyperref}  % 
+        \hypersetup{hidelinks,
+        colorlinks=true,
+        allcolors=black,
+        pdfstartview=Fit,
+        breaklinks=true
+    }
+
+%package to insert codes
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{color}
+\usepackage{listings}
+\lstset{ %
+language=C++,                % choose the language of the code
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+numbers=left,                   % where to put the line-numbers
+numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+stepnumber=1,                   % the step between two line-numbers. If it is 1 each line will be numbered
+numbersep=5pt,                  % how far the line-numbers are from the code
+backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+frame=single,           % adds a frame around the code
+tabsize=2,          % sets default tabsize to 2 spaces
+captionpos=b,           % sets the caption-position to bottom
+breaklines=true,        % sets automatic line breaking
+breakatwhitespace=false,    % sets if automatic breaks should only happen at whitespace
+escapeinside={\%*}{*)}          % if you want to add a comment within your code
+}
+
+%codes settings
+\lstset{
+    basicstyle          =   \sffamily,         
+    keywordstyle        =   \bfseries,        
+    commentstyle        =   \rmfamily\itshape,  % annotations/comments are in italian style
+    stringstyle         =   \ttfamily, 
+    flexiblecolumns,                
+    numbers             =   left,   % 行号的位置在左边
+    showspaces          =   false,  % 是否显示空格,显示了有点乱,所以不现实了
+    numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式,小五号,tt等宽字体
+    showstringspaces    =   false,
+    captionpos          =   t,      % 这段代码的名字所呈现的位置,t指的是top上面
+    frame               =   lrtb,   % show the frame
+}
+
+\lstdefinestyle{Python}{
+    language        =   Python,
+    basicstyle      =   \zihao{-5}\ttfamily,
+    numberstyle     =   \zihao{-5}\ttfamily,
+    keywordstyle    =   \color{blue},
+    keywordstyle    =   [2] \color{teal},
+    stringstyle     =   \color{magenta},
+    commentstyle    =   \color{red}\ttfamily,
+    breaklines      =   true,   % 自动换行,建议不要写太长的行
+    columns         =   fixed, 
+    basewidth       =   0.5em,
+}
+
+
+% Choose a conveniently small page size
+\title{\textbf{Signal and System \\ Course Project Report}}
+\author{张同和\\ \href{zhang-th21@mails.tsinghua.edu.cn}{zhang-th21@mails.tsinghua.edu.cn}}
+\affil{Dep.EE,Tsinghua University}
+
+
+
+\makeatletter
+\let\runauthor\@author
+\let\runtitle\@title
+\makeatother
+
+\begin{document}
+\maketitle
+
+
+%table of contents
+\renewcommand\contentsname{Table of Contents}
+\tableofcontents
+
+%main content starts from here.
+\newpage
+
+\part{\textbf{Verification of correlation property}}
+
+\section{Algorithm design for task 1}
+\par In this task, we wish to verify the following properties:
+\begin{equation}
+    \forall i \in \{0,...m-1\},\tau \in \{-2N,...2N\}:\\
+    \sum_{k=0}^{N-1} c_i[k]c_i[k-\tau]=Q_{i}[\tau]
+    \label{formula_auto}
+\end{equation}
+
+\begin{equation}
+    \forall i \ne j, i,j \in \{0,...m-1\},\tau \in \{-2N,...2N\}:\\
+    \sum_{k=0}^{N-1}c_{i}[k]c_j[k-\tau] =R_{i,j}[\tau]=0,
+    \label{formula_corr}
+\end{equation}
+
+\par where $m=63$ is the number of satellites and 
+$\{c_i[k]\}_{i=0}^{i=m-1}$ are a family of signals with length $N=f_s\cdot T=51.15MHZ\cdot 1ms=51150$.
+
+\par Since the equations are about correlation and autocorrelation, we rewrite them in the form 
+of convolution and apply Fourier transform to both sides, we find that:
+
+\begin{equation}
+    Q_{i}[k]=\mathbf{DFT^{-1}} [\mathbf{DFT}[c_i[k]]\cdot \mathbf{DFT}[c_i[-k]]=\mathbf{DFT}^{-1}[\abs{X_i[k]}^2] 
+    \label{formula_fourier_analysis_auto}
+\end{equation}
+
+\begin{equation}
+    R_{i,j}[k]=\mathbf{DFT^{-1}} [\mathbf{DFT}[c_i[k]]\cdot \mathbf{DFT}[c_j[-k]]=\mathbf{DFT}^{-1}[X_i[k]\cdot X_j^{*}[k]] 
+    \label{formula_fourier_analysis_corr}
+\end{equation}
+
+
+
+\par
+The convolution between two finite-length discrete signals a and b is defined as the convolution of 
+two infinite sequences generated by zero-padding the finite signals, then restricting it to its support.
+If the finite signals a and b have the length N and M respectively, then their convolution has a finite length of N+M-1.
+\\ \indent
+\textbf{This conclusion shows that only 2N-1 elements in the correlation and autocorrelation results of $\{c_i[k]\}_{k=0}^{k=N-1}$ need not be zero, which 
+assumes that the length of the output sequence is 2N-1.}
+To extend the result to $\{-2N,...2N\}$ as the task description requires, 
+we have to zero-pad the convolution result.
+\\The following analysis aims to determine the places to zero-pad.
+
+\begin{equation}
+    \tilde{a}[k]=
+    \begin{cases}
+        a[k],& k\in \{0,...N-1\} \\
+        0,&else
+    \end{cases}
+\end{equation}
+
+\begin{equation}
+    \tilde{b}[k]=
+    \begin{cases}
+        b[k],& k\in \{0,...N-1\} \\
+        0,&else
+    \end{cases}
+\end{equation}
+
+\begin{equation}
+    corr(a,b)[\tau]=R_{ab}[\tau]\sum_{i=0}^{N-1}\tilde{a}[k]\cdot \tilde{b}[k-\tau]
+\end{equation}
+
+\begin{equation}
+    if \ \forall k \in \{0,N-1\}: a[k]b[k-\tau]=0, \ then\ R_{a,b}[\tau]=0 
+\end{equation}
+
+\begin{equation}
+    if \ \forall k \in \{0,N-1\}: k-\tau \leq -1\  or \ k-\tau \geq N\ then\ R_{a,b}[\tau]=0 
+\end{equation}
+
+\begin{equation}
+    if \ \forall k \in \{0,N-1\}: \tau \notin (-N,N) \ then\ R_{a,b}[\tau]=0 
+\end{equation}
+
+\begin{equation}
+    R_{ab}[\tau]=
+    \begin{cases}
+        R_{ab}[\tau],& k\in \{-(N-1),...(N-1)\} \\
+        0,&else
+    \end{cases}
+\end{equation}
+
+\indent Eventually, we have to zero-pad N+1 elements on both the left and right borders of the original domain, which makes the sequence own a length of 4N+1.
+
+\begin{equation}
+    R_{ab}[\tau]=
+    \begin{cases}
+        R_{ab}[\tau],& k\in \{-(N-1),...(N-1)\} \\
+        0,& k \in \{-2N,...-N\} \cup \{N,...2N\}\\
+        undefined,& else
+    \end{cases}
+\end{equation}
+
+Unfortunately, the DFT algorithm does not place elements with negative indices on the left of the positive
+domain, instead, it puts Q[-2N:-1] in the place of Q[2N+1:4N].To solve this problem, we first append 3N+1 zeros to 
+$c_i[k]$, then apply DFT and $DFT^{-1}$ before moving Q[2N+1:4N] back to Q[-2N:-1]. \textbf{This slicing operation
+is referred to as method 'curl' in the source codes.}
+
+\section{Experiment results of task 1}
+\subsection{Autocorrelation Analysis}
+
+\par To verify autocorrelation property \ref{formula_auto}, we execute the algorithm defined above and plot the output sequences.
+\begin{figure}[H]
+\includegraphics[width=\textwidth,height=0.5\textwidth]{auto_24.png}
+\end{figure}
+\begin{figure}[H]
+\includegraphics[width=\textwidth,height=0.5\textwidth]{auto_33.png}
+\end{figure}
+\begin{figure}[H]
+\includegraphics[width=\textwidth,height=0.5\textwidth]{auto_58.png}
+\caption{Autocorrelation of c24,c33 and c58}
+\end{figure}
+
+\textbf{The graphs show that autocorrelation reaches its maximum at $\tau=0$, which fits theroretical properties of autocorrelation.
+Furthermore, the maximum value of autocorrelation is exactly 51150=N, which is supported by the fact that experimental data of 
+$c_i[k]$ is a series with values oscillating between -1 and 1.}
+
+
+\subsection{Correlation Analysis}
+\par To verify correlation property \ref{formula_corr}, we randomly choose two different signals  $c_{i}[k]$ and $c_{j}[k]$
+and calculate their correlation.Then we compare the result with the autocorrelation of $c_i[k]$.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{corr_24_20.png}
+        \caption{$corr(c_{24},c_{24})\ and\ corr(c_{24}, c_{20})$}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{corr_33_13.png}
+        \caption{$corr(c_{33},c_{33})\ and\ corr(c_{33}, c_{13})$}
+    \end{subfigure}
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{corr_58_6.png}
+        \caption{$corr(c_{58},c_{58})\ and\ corr(c_{58}, c_{6})$}
+    \end{subfigure}
+    \caption{Correlation Analysis compared with autocorrelation}
+    \label{fig_corr}
+\end{figure}
+
+\textbf{Although the correlation function is not strictly zero, its magnitude $max|R_{i,j}[k]|$ with respect to the autocorrelation of
+the first signal $max\abs{c_{i}[k]}$  is sufficiently small. 
+This shows that the correlation between different signals can be treated as zero.
+Detailed analysis of their statistics attributes is listed in Table \ref{tab_corr}. (The column "relative mag" 
+stands for $\frac{max|R_{i,j}[k]|}{max\abs{c_{i}[k]}}$.)}
+
+\begin{table}[H]
+    \centering
+    \caption{Correlation Analysis}
+    \begin{tabular}{c||c c c c}
+        correlation pair & mean & std &range &relative mag\\
+        \hline
+        $c_{24}$ and $c_{20}$ & -2.328 &208.932 & 2984.000 & 2.917\%\\
+        $c_{33}$ and $c_{13}$ & 0.332 &205.931  & 2788.000 & 2.725\%\\
+        $c_{58}$ and $c_{6}$ & 0.000 &209.516  &2873.000 & 2.808\%\\
+    \end{tabular}
+    \label{tab_corr}
+\end{table}
+
+\part{\textbf{Acquisition of satellites}}
+
+\section{Algorithm design for task 2}
+
+\par We try to utilize the correlation property between $c_i$ to pick the satellites from r[k].
+\par If a signal y(t) that contains white noise w(t) is generated by 
+scaling and shifting another signal x(t), then we can find the \
+phase shift by simply calculating their correlation.
+
+\begin{eqnarray}
+    corr(Ax(t-t_0)+w(t),x) &= &A\cdot corr(x(t-t_0),x)+corr(w,x) \nonumber    \\
+    &=& A\cdot \int_{\infty}^{\infty} x(t-t_0)x(t-\tau)dt+R_{w,x}(\tau) \nonumber    \\
+    &=& A\cdot \int_{\infty}^{\infty} x(t-(t_0-\tau))x(t)dt+R_{w,x}(\tau) \nonumber    \\
+    &=& A\cdot R_{xx}(t_0-\tau)+R_{w,x}(\tau)
+\end{eqnarray}
+
+\par Since w is white noise, we suppose that it is not related to x(t) and thus $R_{w,x}(\tau)=0$, which 
+yields $\mathbf{corr(y,x)(\tau)=A\cdot R_{xx}(t_0-\tau)=A\cdot R_{xx}(\tau-t_0)}$. 
+\par \indent Considering the fact that autocorrelation $R_{xx}(\tau)$ reaches its maximum when $\tau=0$, we can 
+get the value of $t_0$ by \textbf{setting $t_0=argmax(corr(x,y))$.}
+
+\par The data at hand $r[k]$ is a mixture of periodic signals with length=1000T.
+\\After restricting r[k] to a single period, if it contains a component generated by shifting $c_i$ by $\tau_i$, 
+then its correlation with $c_i$ will have a spike at $\tau=\tau_i$.
+Otherwise, the correlation will be a plain signal with no "spikes", because all the components of r[k] are
+not related with $c_i[k]$.(see formula \ref{formula_corr}).
+
+\begin{eqnarray}
+    corr(r,c_i)[\tau]\vert_T&=&corr(\sum_{j\in V} (s_j(kT_s-\tau_j)+w_j[k])\vert_T,c_i)    \nonumber    \\
+    &=&\sum_{j\in V} corr(s_j(kT_s-\tau_j)\vert_T+w_j[k]\vert_T,c_i)    \nonumber    \\
+    &=&\sum_{j\in V} corr(c_j(kT_s-\tau_j)+w_j[k]\vert_T,c_i)                                    \nonumber    \\
+    &=&\mathbf{1}(i\in V) R_{c_i,c_i}(\tau-\tau_i)
+\end{eqnarray}
+
+\textbf{To test the existence of spikes with a quantitative approach, we set $max(corr(r,c_i))\geq 5\times 10^3$ as the indicator of spikes.}
+With the exact structure of $\{c_i[k]\}_{i=0}^{N-1}$ obtained from task 1, 
+we can design the satellite discovery algorithm as follows:
+
+\begin{algorithm}
+    \caption{Find Satellites}
+    \label{algo_find_sat}
+    \begin{algorithmic} 
+    \STATE $N \ \leftarrow 51150$
+    \STATE $M \ \leftarrow 5000$
+    \STATE $r \ \leftarrow r\vert_{[0,N)}$
+    \FOR {i=0,1,\ldots,m-1}
+        \STATE $corr=correlate(r[k],c_i[k])$
+        \IF {max(corr)$\geq$ M}
+            \STATE $\tau_i \leftarrow argmax(corr)\%N$ 
+        \ENDIF
+    \ENDFOR
+    \STATE $V \leftarrow len(\{\tau_i\})$
+    \RETURN $V,\{\tau_i\}$
+\end{algorithmic}
+\end{algorithm}
+
+\par \textbf{We should note that in the algorithm, we must compute $corr(r,c_i)$, but not $corr(c_i,r)$.
+\\\indent That is because $\tau_i=argmax(corr(r,c_i))=N+1\ - \ argmax(corr(c_i,r)) \ne argmax(corr(c_i,r))$.}
+
+\section{Experiment results of task 2}
+\par Implementation of the algorithm \ref{algo_find_sat} allows the author to \textbf{find four satellites.}
+\par During the execution of the algorithm, the console outputs progress information and pauses to display correlation results
+between signals of discovered satellites and r[k].
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth,height=0.3\textwidth]{find_satellite_2.jpg}
+\caption{Running result of task 2}
+\end{figure}
+
+\par The time-domain correlation graphs of the acquired satellites are shown below.
+\begin{center}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[H]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sat_0.png}
+        \caption{$C_0$}
+        \end{subfigure}
+    \begin{subfigure}[H]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sat_2.png}
+        \caption{$C_2$}
+    \end{subfigure}
+
+    % leave a blank line here to force tex to put images in another row.
+    \begin{subfigure}[H]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sat_4.png}
+        \caption{$C_4$}
+    \end{subfigure}
+    \begin{subfigure}[H]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sat_6.png}
+        \caption{$C_6$}
+    \end{subfigure}
+    \centering
+    \caption{Discovery of satellite signals from r[k].\\The Red lines stand for magnitude=5e3.}
+    
+    \label{find_satellites}
+\end{figure}
+\end{center}
+\par \indent The author \textbf{found four satellites.}
+\par \indent Detailed phaseshift information is recorded automatically by the program and written to a Txt file.
+The information can be summarized as follows:
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|c}
+        i & $\tau_i$\\
+        \hline
+        1 & 5000\\
+        3 & 7255\\
+        5 & 22705\\
+        7 & 2370\\
+    \end{tabular}
+    \caption{Phase shift information of the satellites acquired}
+    \label{tab_compare_all}
+\end{table}
+
+\end{document}
+
+% $\begin{bmatrix} 
+%    a_{11} & a_{12} \\ a_{21} & a_{22}
+% \end{bmatrix}$
+
+
+% \begin{table}[H]
+%     \centering
+%     \begin{tabular}{c c}
+%         i & $\tau_i$\\
+%         \hline
+%         0 & 46151\\
+%         2 & 43896\\
+%         4 & 28446\\
+%         6 & 48781\\
+%     \end{tabular}
+%     \caption{Phase shift information of the satellites acquired}
+%     \label{tab_compare_all}
+% \end{table}
+
+
+
+%https://www.overleaf.com/learn/latex/How_to_Write_a_Thesis_in_LaTeX_(Part_3)%3A_Figures%2C_Subfigures_and_Tables
+% \begin{figure}[H]
+%     \centering
+%     \begin{subfigure}[H]{0.45\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{sat_0.png}
+%         \caption{$C_0$}
+%         \end{subfigure}
+%     \begin{subfigure}[H]{0.45\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{sat_2.png}
+%         \caption{$C_2$}
+%     \end{subfigure}
+
+%     % leave a blank line here to force tex to put images in another row.
+%     \begin{subfigure}[H]{0.45\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{sat_4.png}
+%         \caption{$C_4$}
+%     \end{subfigure}
+%     \begin{subfigure}[H]{0.45\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{sat_6.png}
+%         \caption{$C_6$}
+%     \end{subfigure}
+%     \caption{Discovery of satellite signals from r[k].\\Red line suggests magnitude=5e3.}
+    
+%     \label{find_satellites}
+% \end{figure}
+
+% \begin{algorithm}
+%     \caption{Find Satellites}
+%     \label{algo_find_sat}
+%     \begin{algorithmic} 
+%     \STATE $N \ \leftarrow 51150$
+%     \STATE $M \ \leftarrow 5000$
+%     \STATE $r \ \leftarrow r\vert_{[0,N)}$
+%     \FOR {i=0,1,\ldots,m-1}
+%         \STATE $corr=correlate(r[k],c_i[k])$
+%         \IF {max(corr)$\geq$ M}
+%             \STATE $\tau_i \leftarrow argmax(corr)\%N$ 
+%         \ENDIF
+%     \ENDFOR
+%     \STATE $V \leftarrow len(\{\tau_i\})$
+%     \RETURN $V,\{\tau_i\}$
+% \end{algorithmic}
+% \end{algorithm}
+
+
+%insert source codes..
+%
+%\begin{lstlisting}
+%    loss = CrossEntropyLoss(pred, label )
+%    loss.backward()
+%    optimizer.zero_grad()
+%    optimizer.step()
+%\end{lstlisting} 
