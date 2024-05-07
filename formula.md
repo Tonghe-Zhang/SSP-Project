@@ -1,94 +1,5 @@
 
 
-## Problem 1
-
-$y(t)=x(t)+w(t)$
-
-$w(t)\sim \mathcal{N}(0,\sigma^2)$
-$$
-x(t)=\sum_{k=1}^N a_k \cos \left(2 \pi f_k t+\varphi_k\right):=\mu[t;\theta]
-$$
-$\vec{\theta}:=[a_{1:N};f_{1:N};\varphi_{1:N}]^\top$
-
-$y(t)\sim \mathcal{N}\left(\sum_{k=1}^N a_k \cos \left(2 \pi f_k t+\varphi_k\right), \sigma^2\right):=\mathcal{N}(\mu_\theta(t)\ ,\  \sigma^2)$
-
-Suppose that we collect $n$ data samples from of signal $y(t)$. 
-
-$\vec{y}\sim \mathcal{N}(\vec{\mu_\theta}, \sigma^2 \mathbb{I}_{N})$  where $\vec{\mu_\theta}=\sum_{t=0}^{n-1} \mu_\theta(t)\mathbf{e}_t$
-
-Define
-$$
-\langle y_1,y_2 \rangle = \sum_{t=1}^N~y_1[t]\ y_2[t]\\
-\norm{\vec{y}}_2^2:=\langle \vec{y}, \vec{y} \rangle
-$$
-
-$$
-\ln p_{\mathsf{y}}(\vec{y};\vec{\theta})=-\frac{N}{2} \ln 2\pi \sigma^2-\frac{1}{2\sigma^2} \norm{\vec{y}-\vec{\mu_\theta}}_2^2
-$$
-
-
-$$
-\frac{\partial }{\partial {\theta_i}}\ln p_{\mathsf{y}}(\vec{y};\vec{\theta})
-=\left\langle
-\frac{\vec{y}-\vec{\mu_\theta}}{\sigma^2}, \frac{\partial }{\partial {\theta_i}}\vec{\mu}_\theta
-\right\rangle
-=
-\sum_{t=0}^{N-1}
-\frac{\vec{y}[t]-\vec{\mu}[t;\theta]}{\sigma^2} \frac{\partial }{\partial {\theta_i}}\vec{\mu}[t;\theta]
-$$
-where the derivative of a vector is taken pointwise.
-
-By setting the derivatives to zero, we obtain a series of non-linear equations:
-
-
-
-
-$$
-\sum_{t=0}^{n-1}\left(y[t]-\sum_{k=1}^{N}a_k\cos(2\pi f_k t+\varphi_k)\right)\cdot \cos(2\pi f_i t+\varphi_i)=0
-\\
-\sum_{t=0}^{n-1}\left(y[t]-\sum_{k=1}^{N}a_k\cos(2\pi f_k t+\varphi_k)\right)\cdot a_it\cdot \sin(2\pi f_i t+\varphi_i)=0
-\\
-\sum_{t=0}^{n-1}\left(y[t]-\sum_{k=1}^{N}a_k\cos(2\pi f_k t+\varphi_k)\right)\cdot a_i\sin(2\pi f_i t+\varphi_i)=0
-$$
-
-
-
-
-
-
-
-
-
-
-Denote by
-
-$\alpha_k:=a_k\cos \varphi_k$ and $\beta_k=-a_k\sin \varphi_k$
-
-Then
-$$
-\arg\min_\theta=\arg\min_\theta
-\sum_{t=0}^{n-1}\left(y[t]-\sum_{k=1}^N \alpha_k \cos(2\pi f_k t)+\beta_k \sin (2\pi f_k t)\right)^2
-$$
-Setting the derivative of $f_i$ to zero, we get
-$$
-\sum_{t=0}^{n-1}\left(y[t]-\sum_{k=1}^N \alpha_k \cos(2\pi f_k t)+\beta_k \sin (2\pi f_k t)\right)\cdot \left(-t\alpha_i\sin (2\pi f_i)+t\beta_i \cos(2\pi f_i t)\right)
-$$
-![image-20240503110201287](./formula.assets/image-20240503110201287.png)
-
-
-
-​	![image-20240503110212912](./formula.assets/image-20240503110212912.png)
-
-
-
-
-
-
-
-![image-20240503114150449](./formula.assets/image-20240503114150449.png)
-
-
-
 ## Problem 2
 
 Formulation:
@@ -492,7 +403,17 @@ Summarizing our findings into an algorithm, we can approximately find the MLE es
 
 initial flip is at time=3029
 
-![image-20240505160950453](./formula.assets/image-20240505160950453.png)
+![image-20240506225048586](./formula.assets/image-20240506225048586.png)
+
+
+
+
+
+​	
+
+
+
+
 
 
 
